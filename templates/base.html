@@ -1,0 +1,64 @@
+{%load staticfiles%}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{%block head_title%}E-shop{%endblock%}</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<!-- Font awesome cdn -->
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css"
+	 href='{% static "css/base.css" %}'>
+	
+</head>
+<body>
+
+<!-- ////////////// -->
+{%include "messages_display.html"%}
+<div class="container">
+	<ol class="breadcrumb">
+		<li><a href="{%url 'product:list' %}">Home</a></li>
+		{%block product_detail%}
+		{%endblock%}
+		{%block product_list%}
+		{%endblock%}
+		{%if not request.user.is_authenticated%}
+		<li class="pull-right"><a href="{%url 'register'%}">Register</a></li>			
+		<li class="pull-right"><a href="{%url 'login'%}">Login</a></li>
+		<li class="pull-right"><a href="{%url 'staff'%}">Staff</a></li>
+		{%else%}	
+		<li class="pull-right"><a href="{%url 'logout'%}">Logout</a></li> 
+		{%if not request.user.is_staff%}
+		<li class="pull-right"><a href="{%url 'cart:list'%}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a></li> 
+		{%endif%}
+		<li class="pull-right"><a href="{%url 'order:list'%}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{request.user.username}}</a></li>
+		{%endif%}
+	</ol>
+{%block content%}	
+{%endblock%}
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	
+		/*$(".product-detail-item img").each(function(){
+			$(this).addClass("img-responsive")		
+		})
+	*/
+		
+
+	})
+</script>
+</body>
+</html>
+

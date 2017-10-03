@@ -1,0 +1,89 @@
+{%extends "base.html"%}
+{% load crispy_forms_tags %}
+{% load times %}
+
+{%block head_title%}{{title}} | {{block.super}}{%endblock%}
+
+{%block product_detail %}
+<li>{{title}}</li>
+{%if user.is_staff%}
+<li><a href="{%url 'product:update' instance.id %}">Edit product</a></li>
+{%endif%}
+{%endblock%}
+
+{%block content%}	
+<div class="col-sm-6 col-sm-offset-3">
+	<div class="thumbnail">
+	
+	<img class="detail-size" src="{{instance.image}}">
+	<div class="caption">
+	<h1>{{title}}</h1>
+	<h3><small>Seller: {{instance.seller}} | in {{instance.category}} 
+	</small></h3>
+	<h4><small>{{instance.timestamp|date}}</small></h4>
+	
+	<h4>price: {{instance.price}} $</h4>
+	<p>
+			<form class="form" method="POST" action="{%url 'cart:add' %}">{%csrf_token%}
+			  <input type="hidden" name="product_id" value="{{instance.id}}">
+			  <div class="form-group form-inline">
+			    <label>Quantity</label>
+			    <input type="number" name="quantity" style="width: 11%" class="form-control" min="1" max="10" value="1">
+			  </div>
+			  {%if not user.is_staff%}
+			  <button type="submit" class="btn btn-success">Add to Cart <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i></button>
+			  {%endif%}
+			</form>
+			
+		{%if user.is_staff%}
+		<form class="pull-right" method="POST" action="{{instance.get_delete_url}}">{%csrf_token%}
+			
+			<input type="submit" value="Delete" class="btn btn-danger">
+		</form>
+		<br>
+		{%endif%}
+	</p>
+		
+	</div>
+	</div>
+
+
+
+
+	<div class="row">
+		<div class="col-sm-12">
+			<div>
+			<h2>Description</h2>
+			{{instance.description}}
+			<hr>
+			<p>Average rating: {%for s in average_rating|times %}<i class="fa fa-star" aria-hidden="true"></i>{%endfor%}{%for s in average_rating|times2 %}<i class="fa fa-star-o" aria-hidden="true"></i>{%endfor%} out of {{reviews_count}} reviews</p>
+			</div>
+			
+			<hr>
+			<br>
+			<div>
+			<p class="lead">Reviews</p>
+			{%if request.user.is_authenticated%}
+			<form method="POST" action="">{%csrf_token%}
+				{{review_form|crispy}}
+				<input type="submit" value="Post" class="btn btn-default">
+			</form>
+			{%else%}
+			<p>you must login to comment</p>
+			{%endif%}
+			<hr>
+			{%for comment in reviews%}
+			<blockquote>
+			  <p>{%for s in comment.rating|times %}<i class="fa fa-star" aria-hidden="true"></i>{%endfor%}{%for s in comment.rating|times2 %}<i class="fa fa-star-o" aria-hidden="true"></i>{%endfor%} </p>
+			  <p>{{comment.content}}</p>
+			  <footer>via {{comment.user}} | {{comment.timestamp|timesince}} ago</footer>
+			</blockquote>
+			<hr>
+			{%endfor%}
+			</div>
+			
+	</div>
+</div>	
+</div>
+
+{%endblock%}

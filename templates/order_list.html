@@ -1,0 +1,28 @@
+{%extends "base.html"%}
+
+{%block head_title%}{{title}} | {{block.super}}{%endblock%}
+
+
+{%block content%}
+
+<div class="col-sm-12 col-sm-offset-3">
+  <h3>Order history</h3>
+</div>
+
+{% if orders_qs.exists%}
+
+{% for order in orders_qs %}
+<div class="row">
+
+<h3>{{forloop.counter}}- <a href="{{order.get_absolute_url}}">{{order.timestamp}}</a></h3>
+  
+</div>
+{%endfor%}
+
+{%else%}
+
+<h1>You have no order history</h1>
+
+{%endif%}
+
+{%endblock%}

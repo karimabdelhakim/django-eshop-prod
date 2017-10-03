@@ -1,0 +1,15 @@
+.radio {
+display: inline-block ;
+}
+
+.img-responsive {
+width: 250px;
+height: 200px !important;
+
+}
+
+.detail-size {
+width: 530px;
+height: 550px !important;
+
+}

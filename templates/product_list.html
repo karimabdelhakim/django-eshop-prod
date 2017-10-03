@@ -1,0 +1,62 @@
+{%extends "base.html"%}
+
+{%block product_list%}
+{%if user.is_staff%}
+<li><a href="{%url 'product:create' %}">Add new product</a></li>
+{%endif%}
+{%endblock%}
+
+{%block content%}
+<div class="col-sm-6 col-sm-offset-3">
+	<h1>{{title}}</h1>
+	<form method="GET" action="" class="row">
+	<div class="col-sm-6">
+		<div class="input-group">
+			<input class="form-control" type="text" name="q" placeholder="Search products" value="{{request.GET.q}}">
+			<span class="input-group-btn">
+				<!-- <input class="btn btn-default" type="submit" value="Search"> -->
+				<button class="btn btn-default" type="submit">Search <i class="fa fa-search"></i></button>
+			</span>
+		</div>
+	</div>
+	</form>
+	<br>
+	</div>
+	
+<div class="row">
+{% for product in object_list %}
+  <div class="col-sm-6 col-md-4">
+  
+    <div class="thumbnail">
+      <img src="{{product.image}}" class="img-responsive">
+      <div class="caption">
+        <h3><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3>
+        <h4>{{product.price}} $</h4>
+        <p><a href="{{product.get_absolute_url}}" class="btn btn-primary" role="button">View</a> <!-- <a href="#" class="btn btn-success pull-right" role="button">+<i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i></a> --></p>
+      </div>
+    </div>
+  </div>
+   {%endfor%}
+</div>
+
+	
+<div class="col-sm-6 col-sm-offset-3">
+<div class="pagination">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+            <a href="?{{page_request_var}}={{ object_list.previous_page_number }}{%if request.GET.q%}&q={{request.GET.q}}{%endif%}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+        </span>
+
+        {% if object_list.has_next %}
+            <a href="?{{page_request_var}}={{ object_list.next_page_number }}{%if request.GET.q%}&q={{request.GET.q}}{%endif%}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+</div>
+
+{%endblock%}
