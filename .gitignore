@@ -41,13 +41,15 @@ pip-selfcheck.json
 media_cdn/*
 !media_cdn/.gitkeep
 
-# static_cdn files #
+# static files #
 ####################
-static_cdn/*
-!static_cdn/.gitkeep 
+staticfiles 
 
 # django files #
 ################
 # other #
 .DS_Store
 *~
+
+
+.env
